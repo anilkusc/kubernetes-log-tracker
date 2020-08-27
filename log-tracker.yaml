@@ -1,0 +1,21 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: log-tracker
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 1
+  schedule: "*/10 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: <SERVICE-ACCOUNT>
+          containers:
+          - name: log-tracker
+            image: anilkuscu95/log-tracker  
+            env:
+            - name: DEBUG
+              value: "false"
+          restartPolicy: OnFailure
